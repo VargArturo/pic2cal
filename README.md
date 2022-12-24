@@ -1,1 +1,3 @@
-# pic2cal
+# Recipie2cal
+
+Repository for Recipie to calorie (Missnamed).
