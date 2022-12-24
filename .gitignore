@@ -5,6 +5,7 @@ __pycache__/
 *.train
 *.val
 *Miniconda
+*recipes_with_nutritional_info.json
 
 # C extensions
 *.so
