@@ -9,5 +9,5 @@ Repository for Recipe to calorie (Missnamed).
 Run
 
 ```
-pip install - e .
+pip install -e .
 ```
