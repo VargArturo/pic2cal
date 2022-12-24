@@ -6,6 +6,8 @@ __pycache__/
 *.val
 *Miniconda
 *recipes_with_nutritional_info.json
+pic2cal.egg-info
+
 
 # C extensions
 *.so
