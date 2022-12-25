@@ -3,7 +3,7 @@
 
 
 
-def parse_ingredients(ingredients):
+def parse_ingredients(recipe):
   """
   Takes an input of the form:
     [{'text': 'yogurt, greek, plain, nonfat'},
@@ -23,10 +23,17 @@ def parse_ingredients(ingredients):
     sentence in strong form
   """
   lst = []
-  for ing in ingredients:
-    lst += [ing["text"].replace(", ", "-")]
-  
+
+  format = lambda x: x.replace(', ', '-')
+  for i in range(len(recipe["ingredients"])):
+    ingredient = format(recipe["ingredients"][i]["text"])
+    quantity = format(recipe["quantity"][i]["text"])
+    unit = format(recipe["unit"][i]["text"])
+
+    lst.append(f"{quantity} {unit} of {ingredient}")
+
   return ", ".join(lst)
+
 
 
 def parse_instructions(instructions):
@@ -50,7 +57,8 @@ def parse_instructions(instructions):
   for ing in instructions:
     lst += [ing["text"]]
   
-  return ", ".join(lst)
+  return " ".join(lst)
+
 
 def make_data(lst, partition="train"):
   """
@@ -64,12 +72,12 @@ def make_data(lst, partition="train"):
   dataset_y = []
   for x in lst:
     if x["partition"] == partition:
-      ingredients = parse_ingredients(x["ingredients"])
+      ingredients = parse_ingredients(x)
       instructions = parse_instructions(x["instructions"])
-      calories = x["nutr_values_per100g"]["energy"]
-      sentence = ingredients + ". " + instructions
+      calories = (x["nutr_values_per100g"]["energy"]/100) * sum(x['weight_per_ingr'])
+      sentence = ingredients + ". " + instructions 
 
-      dataset_X += [sentence]
+      dataset_X += [sentence] 
       dataset_y += [calories]
   return dataset_X, dataset_y
-  
+ 
