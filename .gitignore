@@ -6,7 +6,8 @@ __pycache__/
 *.val
 *Miniconda
 *recipes_with_nutritional_info.json
-*open_ai.json
+*open_ai.csv
+*open_ai_prepared.jsonl
 pic2cal.egg-info
 
 
