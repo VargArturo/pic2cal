@@ -1,4 +1,4 @@
-# Byte-compiled / optimized / DLL files
+ # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
@@ -8,6 +8,10 @@ __pycache__/
 *recipes_with_nutritional_info.json
 *open_ai.csv
 *open_ai_prepared.jsonl
+*.json
+*.jsonl
+*.csv
+*.~lock.open_ai.csv\#
 pic2cal.egg-info
 
 
