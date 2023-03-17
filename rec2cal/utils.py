@@ -1,5 +1,7 @@
 """ Module with parsing utilities/auxilirary functions
 """
+import numpy as np
+import csv 
 
 
 
@@ -80,4 +82,40 @@ def make_data(lst, partition="train"):
       dataset_X += [sentence] 
       dataset_y += [calories]
   return dataset_X, dataset_y
+
  
+def save_np_data(file_name, X,y):
+    """
+    
+    saves X and y into npz file file_name in the format of a dicionary with keys X and Y
+
+    """
+    with open(file_name, "wb") as outfile:
+        np.savez(outfile, X=X, y=y)
+
+
+def load_np_data(file_name):
+    """
+    
+    this opens the npz file file_name as a dicionary with keys X, y
+    
+    """
+    with open(file_name, "rb") as outfile:
+        np_dict = np.load(outfile)
+        X, y = np_dict["X"], np_dict["y"]
+    return (X, y)
+
+
+def write_csv(data_set, data_path_name, csv_name="/open_ai_simple_prompts.csv"):
+    """
+    Saves data_set into a csv
+    """
+    data = [x.values() for x in data_set ]
+    with open(data_path_name + "/open_ai_simple_prompts.csv", 'w', encoding='UTF8', newline='') as f:
+      writer = csv.writer(f)
+
+      # write the header
+      writer.writerow(("prompt", "completion"))
+
+      # write multiple rows
+      writer.writerows(data)

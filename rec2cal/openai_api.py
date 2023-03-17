@@ -4,6 +4,20 @@ import re
 import numpy as np
 import time
 
+# vvvvv
+
+models = {
+    "model1":{
+        "model_name": "ada:ft-personal-2022-12-25-20-56-27",
+        "openai.api_key": "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"
+    },
+    "model2":{
+        "model_name": "ada:ft-personal-2022-12-27-00-26-31",
+        "openai.api_key": "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"
+    },
+}
+
+
 def format_data(lst, partition="train"):
   dataset_X = []
   dataset_y = []
@@ -22,6 +36,7 @@ def format_data(lst, partition="train"):
                     
   return f_data
 
+
 our_model = "ada:ft-personal-2022-12-25-20-56-27"
 openai.api_key = "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"
 
@@ -35,10 +50,10 @@ def get_calories(prompt, model):
         result = openai.Completion.create(
             model=model, prompt=prompt
         )
-    #     print(result)
         txt = result['choices'][0]['text']
     except:
         txt = ""
+        raise
     out = re.search(r"\d+\.\d+\s*(end)?", txt)
     try:
         if out is not None:
@@ -49,6 +64,28 @@ def get_calories(prompt, model):
     return out
 
 
-time.sleep(60)
+def get_calories_for_datset(model, dataset, sleep_time=60):
+    """
+    This function calculates caloires for everything in the 
+    given dataset using the provided model. 
+    
+    Sleep time is necessary as open ai api times out
+    and crashes when too many requests are made
+    """
+    out_calories = []
 
-apply_ft_discriminator(validation[0]["prompt"], our_model)
+    for i, x in enumerate(dataset):
+      tmp = get_calories(x["prompt"],  model)
+      out_calories.append(tmp)
+      # Sleep to not exceed openai rate
+      if tmp is None:
+        print(f"Failed {i}")
+      if len(out_calories)  % 43 == 0:
+        time.sleep(sleep_time)
+        print(f"Done with {len(out_calories)} prompts")
+    return out_calories
+
+
+# time.sleep(60)
+
+# apply_ft_discriminator(validation[0]["prompt"], our_model)
