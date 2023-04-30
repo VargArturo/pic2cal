@@ -34,6 +34,13 @@ class OPTools:
       self.dataset = self.format_data()
     
     def format_data(self):
+      """
+      Extracts the parition (train, test, val) from the recipie databse
+      and returns a formated list of dictionaries with prommpts and calories
+      
+      Returns:
+          List of dictionaries [{"promt": ..., "completion": ...}, ...]
+      """
       dataset_X = []
       dataset_y = []
       
@@ -62,7 +69,14 @@ class OPTools:
  
     def get_calories(self, prompt):
         """
-        calls chatgpt on the prompt and extracts the calories from the answer 
+        Ralls chatgpt on the prompt and extracts the calories from the answer
+
+        Args:
+            :param prompt: string with recipie promt to be completed to calories
+        
+        Return:
+            calorie prediction float if succesfull None otherwise
+         
         """
         mx_prmpt = 2049
         try:
@@ -80,6 +94,7 @@ class OPTools:
         except:
             out = out[0].replace(" end", "")
             print(self.prompt, out)
+            return None
         return out
 
     def get_calories_for_datset(self):
@@ -89,6 +104,9 @@ class OPTools:
 
         Sleep time is necessary as open ai api times out
         and crashes when too many requests are made
+        
+        Returns:
+            List of floats with calory predictions (Nones if prediction failed)
         """
         out_calories = []
 
